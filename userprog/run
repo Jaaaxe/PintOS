@@ -1,0 +1,70 @@
+#! /bin/bash
+
+rm -f build/filesys.dsk
+cd build
+pintos-mkdisk filesys.dsk --filesys-size=2
+pintos -v --qemu -- -f -q
+
+case "$1" in
+    "cat")
+        pintos -v --qemu -p ../../examples/cat -a cat -- -q
+        pintos -v --qemu -p ../../examples/lorem.txt -a lorem -- -q
+        pintos -v --qemu -- -q run 'cat lorem'
+        ;;
+
+    "cp")
+        pintos -v --qemu -p ../../examples/cp -a cp -- -q
+        pintos -v --qemu -p ../../examples/cat -a cat -- -q
+        pintos -v --qemu -p ../../examples/lorem.txt -a lorem -- -q
+        pintos -v --qemu -- -q run 'cp lorem newlorem'
+        pintos -v --qemu -- -q run 'cat newlorem'
+        ;;
+
+    # works
+    "echo")
+        pintos -v --qemu -p ../../examples/echo -a echo -- -q
+        pintos -v --qemu -- -q run 'echo foo bar baz'
+        ;;
+
+    "halt")
+        pintos -v --qemu -p ../../examples/halt -a halt -- -q
+        pintos -v --qemu -- -q run 'halt'
+        ;;
+
+    "hex-dump")
+        pintos -v --qemu -p ../../examples/hex-dump -a hex-dump -- -q
+        pintos -v --qemu -p ../../examples/lorem.txt -a lorem -- -q
+        pintos -v --qemu -- -q run 'hex-dump lorem'
+        ;;
+
+    "insult")
+        pintos -v --qemu -p ../../examples/insult -a insult -- -q
+        pintos -v --qemu -- -q run 'insult'
+        ;;
+
+    "lineup")
+        pintos -v --qemu -p ../../examples/lineup -a lineup -- -q
+        pintos -v --qemu -p ../../examples/cat -a cat -- -q
+        pintos -v --qemu -p ../../examples/lorem.txt -a lorem -- -q
+        pintos -v --qemu -- -q run 'lineup lorem'
+        pintos -v --qemu -- -q run 'cat lorem'
+        ;;
+
+    "recursor")
+        pintos -v --qemu -p ../../examples/recursor -a recursor -- -q
+        pintos -v --qemu -- -q run 'recursor hello 5 2'
+        ;;
+
+    "rm")
+        pintos -v --qemu -p ../../examples/rm -a rm -- -q
+        pintos -v --qemu -p ../../examples/lorem.txt -a lorem -- -q
+        pintos -v --qemu -- -q run 'rm lorem'
+        ;;
+
+    "my")
+        pintos -v --qemu -p ../../examples/my -a my -- -q
+        pintos -v --qemu -- -q run 'my'
+        ;;
+esac
+
+cd ..
